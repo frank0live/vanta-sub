@@ -8,7 +8,9 @@
 </p>
 
 <p align="center">
-  <img src="docs/home.png" width="330" alt="VANTA — account view">
+  <img src="docs/home.png" width="260" alt="VANTA — account view">
+  &nbsp;&nbsp;
+  <img src="docs/configs.png" width="260" alt="VANTA — configs view">
 </p>
 
 ---
