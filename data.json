@@ -1,0 +1,150 @@
+{
+  "brand": {
+    "name": "VANTA",
+    "subtitle": "PRIVATE NETWORK",
+    "plan": "PREMIUM",
+    "planCode": "80GB / 30D",
+    "tagline": "عبور امن از سانسور",
+    "logo": null
+  },
+  "user": {
+    "username": "VANTA-DEMO",
+    "id": "a1b2c3d4-0000-0000-0000-000000000000",
+    "status": "active",
+    "used": 19327352832,
+    "total": 85899345920,
+    "lifetime": 19327352832,
+    "expire": 1795123200,
+    "created": 1792531200,
+    "online": 1795046400,
+    "sub_url": "https://panel.example.com/sub/DEMO-TOKEN",
+    "daily_avg": 644245094
+  },
+  "configs": [
+    {
+      "protocol": "vless",
+      "name": "🇩🇪 Germany · Frankfurt",
+      "host": "de1.vanta.net",
+      "port": 443,
+      "net": "ws",
+      "tls": "tls",
+      "sni": "de1.vanta.net",
+      "link": "vless://demo@de1.vanta.net:443?type=ws&security=tls&sni=de1.vanta.net#DE"
+    },
+    {
+      "protocol": "vless",
+      "name": "🇩🇪 Germany · Nuremberg",
+      "host": "de2.vanta.net",
+      "port": 8443,
+      "net": "xhttp",
+      "tls": "tls",
+      "sni": "de2.vanta.net",
+      "link": "vless://demo@de2.vanta.net:8443?type=xhttp&security=tls#DE2"
+    },
+    {
+      "protocol": "vless",
+      "name": "🇳🇱 Netherlands · Amsterdam",
+      "host": "nl1.vanta.net",
+      "port": 443,
+      "net": "ws",
+      "tls": "tls",
+      "sni": "nl1.vanta.net",
+      "link": "vless://demo@nl1.vanta.net:443?type=ws&security=tls#NL"
+    },
+    {
+      "protocol": "vmess",
+      "name": "🇫🇷 France · Paris",
+      "host": "fr1.vanta.net",
+      "port": 2087,
+      "net": "ws",
+      "tls": "tls",
+      "sni": "fr1.vanta.net",
+      "link": "vmess://demo"
+    },
+    {
+      "protocol": "trojan",
+      "name": "🇹🇷 Turkey · Istanbul",
+      "host": "tr1.vanta.net",
+      "port": 443,
+      "net": "tcp",
+      "tls": "tls",
+      "sni": "tr1.vanta.net",
+      "link": "trojan://demo@tr1.vanta.net:443#TR"
+    },
+    {
+      "protocol": "hysteria2",
+      "name": "🇫🇮 Finland · Helsinki",
+      "host": "fi1.vanta.net",
+      "port": 443,
+      "net": "udp",
+      "tls": "tls",
+      "sni": "fi1.vanta.net",
+      "link": "hysteria2://demo@fi1.vanta.net:443#FI"
+    },
+    {
+      "protocol": "ss",
+      "name": "🇸🇪 Sweden · Stockholm",
+      "host": "se1.vanta.net",
+      "port": 8388,
+      "net": "tcp",
+      "tls": "none",
+      "sni": "",
+      "link": "ss://demo"
+    },
+    {
+      "protocol": "vless",
+      "name": "🇦🇪 UAE · Dubai",
+      "host": "ae1.vanta.net",
+      "port": 443,
+      "net": "ws",
+      "tls": "tls",
+      "sni": "ae1.vanta.net",
+      "link": "vless://demo@ae1.vanta.net:443?type=ws&security=tls#AE"
+    }
+  ],
+  "apps": [
+    {
+      "name": "v2rayNG",
+      "desc": "اندروید · محبوب‌ترین کلاینت",
+      "icon": "🤖",
+      "url": "https://github.com/2dust/v2rayNG/releases/latest"
+    },
+    {
+      "name": "Hiddify",
+      "desc": "اندروید / ویندوز / مک / لینوکس",
+      "icon": "🛡️",
+      "url": "https://github.com/hiddify/hiddify-app/releases/latest"
+    },
+    {
+      "name": "Streisand",
+      "desc": "آیفون و آیپد",
+      "icon": "🍎",
+      "url": "https://apps.apple.com/app/streisand/id6450534064"
+    },
+    {
+      "name": "v2Box",
+      "desc": "آیفون · جایگزین سبک",
+      "icon": "📦",
+      "url": "https://apps.apple.com/app/v2box-v2ray-client/id6446814690"
+    },
+    {
+      "name": "NekoBox",
+      "desc": "اندروید · پیشرفته",
+      "icon": "🐱",
+      "url": "https://github.com/MatsuriDayo/NekoBoxForAndroid/releases/latest"
+    },
+    {
+      "name": "FoXray",
+      "desc": "مک و آیفون",
+      "icon": "🦊",
+      "url": "https://apps.apple.com/app/foxray/id6448898396"
+    },
+    {
+      "name": "Nekoray",
+      "desc": "ویندوز و لینوکس",
+      "icon": "💻",
+      "url": "https://github.com/MatsuriDayo/nekoray/releases/latest"
+    }
+  ],
+  "build": "demo build"
+}

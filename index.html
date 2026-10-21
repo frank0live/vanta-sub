@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060a14">
+<title>VANTA — پنل اشتراک</title>
+<meta name="description" content="VANTA · پنل مدیریت اشتراک، کانفیگ‌ها و اپلیکیشن‌ها">
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+:root{
+  --bg:#060a14; --bg-2:#0a1122;
+  --card:rgba(17,25,44,.72); --card-solid:#111a2c;
+  --line:rgba(122,152,204,.14); --line-2:rgba(122,152,204,.26);
+  --text:#eaf1fd; --muted:#8798b6; --muted-2:#5d6d8a;
+  --brand:#ff7d03; --brand-2:#ffb057; --brand-dim:rgba(255,125,3,.14);
+  --cyan:#4cc9f0; --green:#38d39f; --rose:#ff5d73; --violet:#a78bfa;
+  --radius:20px; --radius-sm:14px;
+  --shadow:0 24px 60px -28px rgba(0,0,0,.9);
+  --glow:0 0 0 1px rgba(255,125,3,.16), 0 18px 50px -22px rgba(255,125,3,.35);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:Vazirmatn,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:15px; line-height:1.75;
+  min-height:100dvh; overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+/* ---------- ambient ---------- */
+.amb{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.amb::before,.amb::after{content:"";position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+.amb::before{width:70vw;height:70vw;max-width:640px;max-height:640px;top:-22vw;right:-16vw;
+  background:radial-gradient(circle,rgba(255,125,3,.30),transparent 68%)}
+.amb::after{width:64vw;height:64vw;max-width:560px;max-height:560px;bottom:-20vw;left:-18vw;
+  background:radial-gradient(circle,rgba(76,201,240,.18),transparent 68%)}
+.grid{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(122,152,204,.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(122,152,204,.05) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 25%,transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 25%,transparent 78%);
+}
+.wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 16px 132px}
+
+/* ---------- header ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 2px 10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.mark{width:44px;height:44px;flex-shrink:0;display:grid;place-items:center;border-radius:13px;
+  background:linear-gradient(150deg,rgba(255,125,3,.16),rgba(255,125,3,.04));
+  border:1px solid rgba(255,125,3,.28);
+  box-shadow:0 8px 22px -12px rgba(255,125,3,.7), inset 0 1px 0 rgba(255,255,255,.07)}
+.mark svg{width:27px;height:27px;display:block;filter:drop-shadow(0 0 6px rgba(255,125,3,.45))}
+.mark.has-img{background:transparent;border:0;box-shadow:none}
+.mark img{width:100%;height:100%;object-fit:contain;display:block}
+.brand-txt{min-width:0}
+.brand-name{font-size:19px;font-weight:900;letter-spacing:.16em;line-height:1.15;
+  background:linear-gradient(92deg,#fff 10%,var(--brand-2) 60%,var(--brand) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-sub{font-size:10.5px;color:var(--muted-2);letter-spacing:.28em;font-weight:700}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;
+  padding:6px 11px;border-radius:999px;white-space:nowrap;
+  background:rgba(56,211,159,.10);color:var(--green);border:1px solid rgba(56,211,159,.28)}
+.pill.off{background:rgba(255,93,115,.10);color:var(--rose);border-color:rgba(255,93,115,.3)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 0 0 currentColor;
+  animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(56,211,159,.5)}70%{box-shadow:0 0 0 7px rgba(56,211,159,0)}100%{box-shadow:0 0 0 0 rgba(56,211,159,0)}}
+
+/* ---------- cards ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow)}
+.card-pad{padding:18px}
+
+/* ---------- hero ---------- */
+.hero{margin-top:6px;padding:26px 18px 20px;text-align:center;position:relative;overflow:hidden;
+  background:
+    radial-gradient(90% 70% at 50% -18%,rgba(255,125,3,.16),transparent 62%),
+    radial-gradient(60% 50% at 88% 108%,rgba(76,201,240,.10),transparent 60%),
+    var(--card);
+  border-color:rgba(255,125,3,.20);box-shadow:var(--glow),var(--shadow)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),transparent 38%)}
+.plan{font-size:12px;font-weight:900;letter-spacing:.34em;color:var(--brand-2);opacity:.9}
+.plan-line{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 2px}
+.plan-line i{height:1px;width:34px;background:linear-gradient(90deg,transparent,var(--brand),transparent)}
+.tagline{color:var(--muted);font-size:12.5px;margin:8px 0 0}
+
+.ring-wrap{position:relative;width:196px;height:196px;margin:14px auto 2px}
+.ring-wrap svg{transform:rotate(-90deg);display:block}
+.ring-bg{fill:none;stroke:rgba(122,152,204,.13);stroke-width:11}
+.ring-fg{fill:none;stroke:url(#grad);stroke-width:11;stroke-linecap:round;
+  transition:stroke-dashoffset 1.4s cubic-bezier(.22,1,.36,1);
+  filter:drop-shadow(0 0 5px rgba(255,125,3,.35))}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num{font-size:31px;font-weight:900;line-height:1;letter-spacing:-.02em;direction:ltr}
+.ring-num small{font-size:14px;font-weight:700;color:var(--muted);margin-inline-start:3px}
+.ring-lbl{font-size:11.5px;color:var(--muted);margin-top:7px;font-weight:600}
+.ring-pct{margin-top:9px;font-size:11px;font-weight:800;color:var(--brand-2);
+  background:var(--brand-dim);border:1px solid rgba(255,125,3,.25);
+  padding:3px 10px;border-radius:999px;direction:ltr}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}
+.stat{background:rgba(10,17,34,.62);border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:12px 6px;text-align:center}
+.stat b{display:block;font-size:15.5px;font-weight:900;direction:ltr;letter-spacing:-.01em}
+.stat span{display:block;font-size:10.5px;color:var(--muted-2);margin-top:3px;font-weight:600}
+.stat.s1 b{color:var(--green)} .stat.s2 b{color:var(--brand-2)} .stat.s3 b{color:var(--text)}
+
+/* ---------- countdown ---------- */
+.cd{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line-2)}
+.cd-title{font-size:11px;color:var(--muted-2);text-align:center;margin-bottom:9px;font-weight:700}
+.cd-row{display:flex;gap:8px;justify-content:center;direction:ltr}
+.cd-box{flex:1;max-width:88px;background:rgba(10,17,34,.7);border:1px solid var(--line);
+  border-radius:12px;padding:9px 4px;text-align:center}
+.cd-box b{display:block;font-size:21px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.cd-box span{display:block;font-size:9.5px;color:var(--muted-2);margin-top:5px;font-weight:700}
+.cd-box.warn b{color:var(--rose)} .cd-box.warn{border-color:rgba(255,93,115,.32);background:rgba(255,93,115,.07)}
+
+/* ---------- sub link ---------- */
+.sec-title{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;
+  color:var(--muted);margin:22px 4px 10px}
+.sec-title svg{width:15px;height:15px;stroke:var(--brand);fill:none;stroke-width:1.9}
+.sec-title i{flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent)}
+.link-box{display:flex;gap:8px;align-items:stretch}
+.link-in{flex:1;min-width:0;background:rgba(6,10,20,.75);border:1px solid var(--line);
+  border-radius:13px;padding:12px 13px;font-size:11.5px;color:var(--cyan);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;
+  transition:border-color .18s,background .18s}
+.link-in:hover{border-color:var(--line-2);background:rgba(6,10,20,.95)}
+.btn{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:12.5px;
+  border-radius:13px;padding:0 15px;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  transition:transform .15s,filter .18s,background .18s;white-space:nowrap}
+.btn:active{transform:scale(.965)}
+.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+.btn-p{background:linear-gradient(135deg,var(--brand),#e85d00);color:#fff;
+  box-shadow:0 10px 24px -12px rgba(255,125,3,.8)}
+.btn-p:hover{filter:brightness(1.09)}
+.btn-g{background:rgba(122,152,204,.11);color:var(--text);border:1px solid var(--line-2)}
+.btn-g:hover{background:rgba(122,152,204,.18)}
+
+/* ---------- tabs ---------- */
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:40;padding:10px 16px calc(12px + env(safe-area-inset-bottom))}
+.tabs-in{max-width:520px;margin:0 auto;display:flex;gap:5px;padding:5px;border-radius:18px;
+  background:rgba(10,16,30,.9);border:1px solid var(--line-2);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  box-shadow:0 -10px 40px -18px rgba(0,0,0,.95)}
+.tab{flex:1;border:0;background:transparent;color:var(--muted);font-family:inherit;
+  font-size:12px;font-weight:800;padding:10px 4px;border-radius:13px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;transition:.2s;position:relative}
+.tab svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.85}
+.tab.on{color:#fff;background:linear-gradient(135deg,rgba(255,125,3,.95),rgba(232,93,0,.95));
+  box-shadow:0 8px 20px -10px rgba(255,125,3,.9)}
+.view{display:none;animation:fade .32s ease both}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+/* ---------- account ---------- */
+.rows{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 2px;
+  border-bottom:1px solid rgba(122,152,204,.08);font-size:12.5px}
+.row:last-child{border-bottom:0}
+.row span{color:var(--muted-2);flex-shrink:0;font-weight:600}
+.row b{font-weight:700;text-align:left;direction:ltr;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;max-width:62%}
+.row b.fa{direction:rtl}
+.copyable{cursor:pointer;border-bottom:1px dashed rgba(122,152,204,.3)}
+.copyable:active{color:var(--brand-2)}
+
+/* ---------- configs ---------- */
+.search{position:relative;margin-bottom:12px}
+.search input{width:100%;background:rgba(6,10,20,.75);border:1px solid var(--line);
+  border-radius:13px;padding:11px 40px 11px 13px;color:var(--text);font-family:inherit;
+  font-size:13px;outline:none;transition:border-color .18s}
+.search input:focus{border-color:rgba(255,125,3,.5);box-shadow:0 0 0 3px rgba(255,125,3,.09)}
+.search input::placeholder{color:var(--muted-2)}
+.search svg{position:absolute;inset-inline-end:13px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;stroke:var(--muted-2);fill:none;stroke-width:2;pointer-events:none}
+.cfg{display:flex;align-items:center;gap:11px;padding:12px 13px;border-radius:14px;
+  background:rgba(10,17,34,.6);border:1px solid var(--line);margin-bottom:8px;
+  transition:border-color .18s,background .18s}
+.cfg:hover{border-color:var(--line-2);background:rgba(10,17,34,.85)}
+.cfg-flag{width:30px;height:24px;flex-shrink:0;display:grid;place-items:center;border-radius:7px;
+  font-size:10.5px;font-weight:900;letter-spacing:.02em;font-family:ui-monospace,Menlo,monospace;
+  background:rgba(122,152,204,.10);border:1px solid rgba(122,152,204,.20);color:#b9c9e4}
+.cfg-body{flex:1;min-width:0}
+.cfg-name{font-size:12.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cfg-meta{font-size:10.5px;color:var(--muted-2);direction:ltr;text-align:right;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;
+  font-family:ui-monospace,Menlo,monospace}
+.proto{font-size:9px;font-weight:900;letter-spacing:.06em;padding:2.5px 7px;border-radius:6px;
+  text-transform:uppercase;flex-shrink:0}
+.p-vless{background:rgba(76,201,240,.13);color:var(--cyan);border:1px solid rgba(76,201,240,.3)}
+.p-vmess{background:rgba(167,139,250,.13);color:var(--violet);border:1px solid rgba(167,139,250,.3)}
+.p-trojan{background:rgba(255,93,115,.13);color:var(--rose);border:1px solid rgba(255,93,115,.3)}
+.p-ss{background:rgba(56,211,159,.13);color:var(--green);border:1px solid rgba(56,211,159,.3)}
+.p-hy2{background:rgba(255,176,87,.13);color:var(--brand-2);border:1px solid rgba(255,176,87,.3)}
+.icon-btn{width:32px;height:32px;flex-shrink:0;border-radius:9px;border:1px solid var(--line);
+  background:rgba(122,152,204,.07);color:var(--muted);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:.18s}
+.icon-btn:hover{background:rgba(255,125,3,.14);color:var(--brand-2);border-color:rgba(255,125,3,.35)}
+.icon-btn:active{transform:scale(.9)}
+.icon-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.empty{text-align:center;padding:34px 16px;color:var(--muted-2);font-size:12.5px}
+
+/* ---------- apps ---------- */
+.app{display:flex;align-items:center;gap:12px;padding:13px;border-radius:14px;
+  background:rgba(10,17,34,.6);border:1px solid var(--line);margin-bottom:8px;
+  text-decoration:none;color:inherit;transition:.18s}
+.app:hover{border-color:rgba(255,125,3,.35);background:rgba(255,125,3,.06);transform:translateX(-2px)}
+.app-ico{width:40px;height:40px;border-radius:11px;flex-shrink:0;display:flex;
+  align-items:center;justify-content:center;font-size:19px;
+  background:linear-gradient(145deg,rgba(255,125,3,.18),rgba(76,201,240,.12));
+  border:1px solid var(--line-2)}
+.app-n{font-size:12.5px;font-weight:800}
+.app-d{font-size:10.5px;color:var(--muted-2);margin-top:1px}
+.app-go{margin-inline-start:auto;color:var(--muted-2);font-size:16px}
+
+/* ---------- qr modal ---------- */
+.modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;
+  padding:24px;background:rgba(3,6,12,.82);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.modal.on{display:flex;animation:fade .22s ease both}
+.modal-box{background:var(--card-solid);border:1px solid var(--line-2);border-radius:22px;
+  padding:22px;max-width:330px;width:100%;text-align:center;box-shadow:0 30px 70px -25px #000}
+.modal-box h3{margin:0 0 4px;font-size:14px;font-weight:800}
+.modal-box p{margin:0 0 16px;font-size:11px;color:var(--muted-2)}
+#qrHost{background:#fff;border-radius:14px;padding:12px;display:inline-block;line-height:0}
+#qrHost canvas,#qrHost img{display:block;width:210px;height:210px}
+.modal-close{margin-top:16px;width:100%}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;bottom:92px;left:50%;transform:translate(-50%,16px);z-index:90;
+  background:rgba(17,26,44,.97);border:1px solid rgba(56,211,159,.4);color:var(--text);
+  font-size:12.5px;font-weight:700;padding:10px 18px;border-radius:999px;
+  box-shadow:0 16px 40px -14px #000;opacity:0;pointer-events:none;transition:.26s;
+  display:flex;align-items:center;gap:7px;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast svg{width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:2.4}
+
+.foot{text-align:center;font-size:10.5px;color:var(--muted-2);padding:26px 0 6px;line-height:2}
+.foot b{color:var(--brand-2);letter-spacing:.1em;font-weight:800}
+
+@media (max-width:380px){
+  .ring-wrap{width:186px;height:186px}
+  .ring-num{font-size:30px}
+  .stat b{font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="amb"></div><div class="grid"></div>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none">
+          <defs>
+            <linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffc078"/><stop offset=".5" stop-color="#ff7d03"/><stop offset="1" stop-color="#d95000"/>
+            </linearGradient>
+          </defs>
+          <path d="M13 15l11 20 11-20" stroke="url(#mg)" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M31.5 9.5a13 13 0 0 1 0 0M35 6a18 18 0 0 1 0 0" stroke="#ff9a3c" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
+          <circle cx="34" cy="11" r="2.6" fill="#ffb057"/>
+          <circle cx="40" cy="6.5" r="1.6" fill="#ff7d03" opacity=".8"/>
+        </svg>
+      </span>
+      <div class="brand-txt">
+        <div class="brand-name" id="bName">VANTA</div>
+        <div class="brand-sub" id="bSub">PRIVATE NETWORK</div>
+      </div>
+    </div>
+    <div class="pill" id="statusPill"><i class="dot"></i><span id="statusTxt">فعال</span></div>
+  </header>
+
+  <!-- ============ TAB: ACCOUNT ============ -->
+  <div class="view on" id="v-account">
+    <section class="card hero">
+      <div class="plan" id="planName">PREMIUM</div>
+      <div class="plan-line"><i></i><span style="font-size:10.5px;letter-spacing:.3em;color:var(--muted-2);font-weight:800" id="planCode">PLAN</span><i></i></div>
+      <p class="tagline" id="tagline">عبور امن از سانسور</p>
+
+      <div class="ring-wrap">
+        <svg width="196" height="196" viewBox="0 0 196 196">
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffb057"/>
+              <stop offset="55%" stop-color="#ff7d03"/>
+              <stop offset="100%" stop-color="#e85d00"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="98" cy="98" r="86"/>
+          <circle class="ring-fg" id="ring" cx="98" cy="98" r="86"
+                  stroke-dasharray="540" stroke-dashoffset="0"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-num"><span id="leftNum">—</span><small id="leftUnit">GB</small></div>
+          <div class="ring-lbl">حجم باقی‌مانده</div>
+          <div class="ring-pct" id="usedPct">از ۸۰ GB</div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat s1"><b id="stLeft">—</b><span>باقی‌مانده</span></div>
+        <div class="stat s2"><b id="stUsed">—</b><span>مصرف‌شده</span></div>
+        <div class="stat s3"><b id="stTotal">—</b><span>حجم کل</span></div>
+      </div>
+
+      <div class="cd">
+        <div class="cd-title">زمان باقی‌مانده تا انقضا</div>
+        <div class="cd-row">
+          <div class="cd-box" id="cdD"><b>—</b><span>روز</span></div>
+          <div class="cd-box" id="cdH"><b>—</b><span>ساعت</span></div>
+          <div class="cd-box" id="cdM"><b>—</b><span>دقیقه</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="sec-title">
+      <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
+      <span>لینک اشتراک</span><i></i>
+    </div>
+    <div class="card card-pad">
+      <div class="link-box">
+        <div class="link-in" id="subLink" title="برای کپی کلیک کنید">—</div>
+        <button class="btn btn-p" id="btnCopySub">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>کپی
+        </button>
+        <button class="btn btn-g" id="btnQrSub" title="کد QR">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20v.01M20 20v.01"/></svg>
+        </button>
+      </div>
+      <p style="margin:11px 0 0;font-size:10.5px;color:var(--muted-2);line-height:1.9">
+        این لینک را در اپلیکیشن خود وارد کنید. هر بار که کانفیگ‌ها به‌روزرسانی شوند، از همین لینک دریافت می‌شوند.
+      </p>
+    </div>
+
+    <div class="sec-title">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>
+      <span>اطلاعات اکانت</span><i></i>
+    </div>
+    <div class="card card-pad">
+      <div class="rows" id="accRows"></div>
+    </div>
+  </div>
+
+  <!-- ============ TAB: CONFIGS ============ -->
+  <div class="view" id="v-configs">
+    <div class="sec-title" style="margin-top:14px">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <span>کانفیگ‌ها</span><i></i>
+      <em style="font-style:normal;font-size:10.5px;color:var(--muted-2)" id="cfgCount"></em>
+    </div>
+    <div class="search">
+      <input id="search" type="search" placeholder="جست‌وجوی سرور…" autocomplete="off">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    </div>
+    <div id="cfgList"></div>
+    <div class="empty" id="cfgEmpty" style="display:none">سروری با این نام پیدا نشد</div>
+  </div>
+
+  <!-- ============ TAB: APPS ============ -->
+  <div class="view" id="v-apps">
+    <div class="sec-title" style="margin-top:14px">
+      <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="3"/><path d="M11 18h2"/></svg>
+      <span>اپلیکیشن‌های پیشنهادی</span><i></i>
+    </div>
+    <div id="appList"></div>
+    <p style="font-size:10.5px;color:var(--muted-2);text-align:center;padding:14px 8px;line-height:2">
+      پس از نصب، لینک اشتراک را کپی کرده و در بخش «Import / افزودن از لینک» جای‌گذاری کنید.
+    </p>
+  </div>
+
+  <div class="foot">
+    <b>VANTA</b> · ساخته‌شده برای اتصال پایدار<br>
+    <span id="footBuild"></span>
+  </div>
+</div>
+
+<!-- tabs -->
+<nav class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" data-view="account">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>اکانت
+    </button>
+    <button class="tab" data-view="configs">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>کانفیگ‌ها
+    </button>
+    <button class="tab" data-view="apps">
+      <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="3"/><path d="M11 18h2"/></svg>اپ‌ها
+    </button>
+  </div>
+</nav>
+
+<!-- qr modal -->
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3 id="qrTitle">کد QR</h3>
+    <p id="qrSub">با دوربین گوشی اسکن کنید</p>
+    <div id="qrHost"></div>
+    <button class="btn btn-g modal-close" id="qrClose">بستن</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span id="toastTxt">کپی شد</span></div>
+
+<script src="assets/qrcode.js"></script>
+<script>
+/* =========================================================
+   VANTA sub page — data-driven, no framework, no build step.
+   Reads ./data.json. See build.py to generate it from a real
+   subscription URL.
+   ========================================================= */
+const FA = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+const fa = s => String(s).replace(/\d/g, d => FA[+d]);
+const $ = id => document.getElementById(id);
+
+function humanBytes(b){
+  if (!b && b !== 0) return '—';
+  const u = ['B','KB','MB','GB','TB'];
+  let i = 0, n = b;
+  while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
+  const d = n >= 100 ? 0 : n >= 10 ? 1 : 2;
+  return n.toFixed(d).replace(/\.0+$/, '') + ' ' + u[i];
+}
+function splitBytes(b){
+  const u = b >= 1024**3 ? ['GB', 1024**3] : b >= 1024**2 ? ['MB', 1024**2] : ['KB', 1024];
+  return { n: b / u[1], u: u[0] };
+}
+function tsFa(ts){
+  if (!ts) return '—';
+  try {
+    return new Intl.DateTimeFormat('fa-IR', {
+      year:'numeric', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', calendar:'persian'
+    }).format(new Date(ts * 1000));
+  } catch(e){ return new Date(ts*1000).toLocaleString('fa-IR'); }
+}
+
+let DATA = null;
+let RING_LEN = 540;   // 2πr, r = 86
+
+async function boot(){
+  try {
+    const r = await fetch('data.json', { cache: 'no-store' });
+    if (!r.ok) throw new Error(r.status);
+    DATA = await r.json();
+  } catch(e){
+    DATA = window.VANTA_DEMO || null;
+  }
+  if (!DATA) { document.body.innerHTML = '<div style="padding:60px 24px;text-align:center;color:#8798b6">data.json یافت نشد</div>'; return; }
+  render();
+}
+
+function render(){
+  const u = DATA.user || {}, b = DATA.brand || {};
+
+  /* brand */
+  if (b.name) { $('bName').textContent = b.name; document.title = b.name + ' — پنل اشتراک'; }
+  if (b.tagline) { $('tagline').textContent = b.tagline; }
+  if (b.subtitle) $('bSub').textContent = b.subtitle;
+  if (b.plan) $('planName').textContent = b.plan;
+  if (b.planCode) $('planCode').textContent = b.planCode;
+  if (b.logo) {
+    const m = document.querySelector('.mark');
+    m.innerHTML = `<img src="${esc(b.logo)}" alt="${esc(b.name || '')}">`;
+    m.classList.add('has-img');
+  }
+  if (DATA.build) $('footBuild').textContent = DATA.build;
+
+  /* status */
+  const active = (u.status || 'active') === 'active' && (!u.expire || u.expire * 1000 > Date.now());
+  const pill = $('statusPill');
+  pill.classList.toggle('off', !active);
+  $('statusTxt').textContent = active ? 'فعال' : 'غیرفعال';
+
+  /* usage */
+  const used = u.used || 0, total = u.total || 0;
+  const left = Math.max(0, total - used);
+  const pct = total ? Math.min(100, used / total * 100) : 0;
+
+  const L = splitBytes(left);
+  $('leftNum').textContent = fa(L.n.toFixed(L.n >= 100 ? 0 : L.n >= 10 ? 1 : 2).replace(/\.0+$/, ''));
+  $('leftUnit').textContent = L.u;
+  $('usedPct').innerHTML = 'از <bdi>' + fa(humanBytes(total)) + '</bdi>';
+
+  $('stLeft').textContent = fa(humanBytes(left));
+  $('stUsed').textContent = fa(humanBytes(used));
+  $('stTotal').textContent = fa(humanBytes(total));
+
+  /* the arc represents what is LEFT, so a fresh plan is a full ring */
+  requestAnimationFrame(() => {
+    const leftRatio = total ? Math.max(0, Math.min(1, left / total)) : 0;
+    $('ring').style.strokeDashoffset = RING_LEN * (1 - leftRatio);
+  });
+
+  /* countdown */
+  tickCountdown(u.expire);
+  setInterval(() => tickCountdown(u.expire), 30000);
+
+  /* sub link */
+  const link = u.sub_url || '';
+  $('subLink').textContent = link || '—';
+  $('subLink').onclick = () => copy(link);
+  $('btnCopySub').onclick = () => copy(link);
+  $('btnQrSub').onclick = () => showQr(link, 'لینک اشتراک');
+
+  /* account rows */
+  const rows = [
+    ['نام کاربری', u.username, false, true],
+    ['شناسه', u.id, true],
+    ['وضعیت', active ? 'فعال' : 'غیرفعال', false, true],
+    ['حجم کل', fa(humanBytes(total)), true],
+    ['حجم مصرف‌شده', fa(humanBytes(used)), true],
+    ['مجموع مصرف از ابتدا', fa(humanBytes(u.lifetime ?? used)), true],
+    ['تاریخ ایجاد', tsFa(u.created), false, true],
+    ['آخرین اتصال', tsFa(u.online), false, true],
+    ['تاریخ انقضا', tsFa(u.expire), false, true],
+    ['میانگین مصرف روزانه', fa(humanBytes(u.daily_avg ?? Math.round(used / Math.max(1, daysSince(u.created))))), true],
+  ].filter(r => r[1] !== undefined && r[1] !== null && r[1] !== '');
+
+  $('accRows').innerHTML = rows.map(([k, v, ltr, isFa]) => `
+    <div class="row">
+      <span>${k}</span>
+      <b class="${isFa ? 'fa' : ''} ${ltr ? 'copyable' : ''}" ${ltr ? `data-copy="${String(v).replace(/"/g,'&quot;')}"` : ''}>${v}</b>
+    </div>`).join('');
+
+  $('accRows').querySelectorAll('[data-copy]').forEach(el => {
+    el.onclick = () => copy(el.dataset.copy);
+  });
+
+  /* configs */
+  const cfgs = DATA.configs || [];
+  $('cfgCount').textContent = fa(cfgs.length) + ' سرور';
+  renderConfigs(cfgs);
+  $('search').oninput = e => renderConfigs(cfgs, e.target.value.trim().toLowerCase());
+
+  /* apps */
+  renderApps(DATA.apps || []);
+}
+
+function daysSince(ts){
+  if (!ts) return 1;
+  return Math.max(1, Math.ceil((Date.now() / 1000 - ts) / 86400));
+}
+
+function tickCountdown(expire){
+  const ms = expire ? expire * 1000 - Date.now() : 0;
+  const ok = ms > 0;
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const d = Math.floor(s / 86400);
+  const h = Math.floor(s % 86400 / 3600);
+  const m = Math.floor(s % 3600 / 60);
+  $('cdD').firstElementChild.textContent = ok ? fa(d) : '۰';
+  $('cdH').firstElementChild.textContent = ok ? fa(h) : '۰';
+  $('cdM').firstElementChild.textContent = ok ? fa(m) : '۰';
+  const warn = !ok || s < 86400 * 3;
+  ['cdD','cdH','cdM'].forEach(id => $(id).classList.toggle('warn', warn));
+}
+
+/* Turn whatever country hint the panel shipped (emoji flag, "DE", "Germany")
+   into a 2-letter code. A text chip always renders — emoji flags do not on
+   every platform, and a missing glyph looks broken. */
+function ccFromEmoji(name){
+  const m = (name || '').match(/[\u{1F1E6}-\u{1F1FF}]{2}/u);
+  if (!m) return '';
+  const pts = [...m[0]].map(ch => ch.codePointAt(0) - 0x1F1E6);
+  return String.fromCharCode(65 + pts[0], 65 + pts[1]);
+}
+function stripEmoji(name){
+  return String(name || '')
+    /* emoji flags, symbols, box-drawing, hieroglyph separators panels love */
+    .replace(/[\u{1F1E6}-\u{1F1FF}]{2}/gu, '')
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{25A0}-\u{25FF}]/gu, '')
+    .replace(/[\u{13000}-\u{1342F}]/gu, '·')
+    .replace(/[\u2500-\u257F]/g, '·')
+    .replace(/\s*[·|]\s*(?=[·|])/g, ' ')
+    .replace(/^[\s\-\u2013\u2014·|:]+/, '')
+    .replace(/[\s\-\u2013\u2014·|:]+$/, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+function flagOf(name){
+  const e = ccFromEmoji(name);
+  if (e) return e;
+  const n = (name || '').toLowerCase();
+  const map = [
+    [/(\bde\b|german|آلمان|frankfurt|berlin|nuremberg)/, 'DE'],
+    [/(\bnl\b|nether|هلند|amsterdam)/, 'NL'],
+    [/(\bfr\b|france|فرانسه|paris)/, 'FR'],
+    [/(\btr\b|turkey|ترکیه|istanbul)/, 'TR'],
+    [/(\bus\b|usa|america|آمریکا)/, 'US'],
+    [/(\bgb\b|\buk\b|england|لندن|london)/, 'GB'],
+    [/(\bse\b|sweden|سوئد)/, 'SE'],
+    [/(\bfi\b|finland|فنلاند|\bfl\b)/, 'FI'],
+    [/(\bpl\b|poland|لهستان)/, 'PL'],
+    [/(\bru\b|russia|روسیه)/, 'RU'],
+    [/(\bae\b|emirat|امارات|dubai|دبی)/, 'AE'],
+    [/(\bca\b|canada|کانادا)/, 'CA'],
+    [/(\bjp\b|japan|ژاپن)/, 'JP'],
+    [/(\bsg\b|singapore|سنگاپور)/, 'SG'],
+    [/(\bch\b|swiss|سوئیس)/, 'CH'],
+    [/(\bat\b|austria|اتریش)/, 'AT'],
+    [/(\bir\b|iran|ایران|tehran|تهران)/, 'IR'],
+    [/(\bin\b|india|هند)/, 'IN'],
+    [/(\bam\b|armenia|ارمنستان)/, 'AM'],
+    [/(\bge\b|georgia|گرجستان)/, 'GE'],
+    [/(\baz\b|azerbaijan|آذربایجان)/, 'AZ'],
+    [/(\bby\b|belarus|بلاروس)/, 'BY'],
+    [/(\bua\b|ukraine|اوکراین)/, 'UA'],
+    [/(\bno\b|norway|نروژ)/, 'NO'],
+    [/(\bdk\b|denmark|دانمارک)/, 'DK'],
+    [/(\bcze|cz\b|prague|چک)/, 'CZ'],
+    [/(\bes\b|spain|اسپانیا|madrid)/, 'ES'],
+    [/(\bit\b|italy|ایتالیا|milan)/, 'IT'],
+    [/(\bgr\b|greece|یونان)/, 'GR'],
+    [/(\bhu\b|hungary|مجارستان)/, 'HU'],
+    [/(\bro\b|romania|رومانی)/, 'RO'],
+    [/(\bbg\b|bulgaria|بلغارستان)/, 'BG'],
+    [/(\bsk\b|slovak|اسلواکی)/, 'SK'],
+    [/(\blt\b|lithuania|لیتوانی)/, 'LT'],
+    [/(\blv\b|latvia|لتونی)/, 'LV'],
+    [/(\bee\b|estonia|استونی)/, 'EE'],
+    [/(\bmk\b|macedonia|مقدونیه)/, 'MK'],
+    [/(\brs\b|serbia|صربستان)/, 'RS'],
+    [/(\bhr\b|croatia|کرواسی)/, 'HR'],
+  ];
+  for (const [re, cc] of map) if (re.test(n)) return cc;
+  return '··';
+}
+
+function protoClass(p){
+  p = (p || '').toLowerCase();
+  if (p.startsWith('vless')) return 'p-vless';
+  if (p.startsWith('vmess')) return 'p-vmess';
+  if (p.startsWith('trojan')) return 'p-trojan';
+  if (p === 'ss' || p.startsWith('shadowsocks')) return 'p-ss';
+  if (p.startsWith('hysteria') || p === 'hy2') return 'p-hy2';
+  return 'p-vless';
+}
+
+function renderConfigs(list, q){
+  const host = $('cfgList');
+  const items = q ? list.filter(c =>
+    (c.name || '').toLowerCase().includes(q) ||
+    (c.host || '').toLowerCase().includes(q) ||
+    (c.protocol || '').toLowerCase().includes(q)
+  ) : list;
+
+  $('cfgEmpty').style.display = items.length ? 'none' : 'block';
+
+  host.innerHTML = items.map((c, i) => {
+    const realIdx = list.indexOf(c);
+    const meta = [c.host, c.port].filter(Boolean).join(':') + (c.net ? ' · ' + c.net : '');
+    return `<div class="cfg">
+      <span class="cfg-flag">${flagOf(c.name)}</span>
+      <div class="cfg-body">
+        <div class="cfg-name">${esc(stripEmoji(c.name) || c.host || 'Server ' + (realIdx + 1))}</div>
+        <div class="cfg-meta">${esc(meta)}</div>
+      </div>
+      <span class="proto ${protoClass(c.protocol)}">${esc((c.protocol || 'vless').replace('shadowsocks','ss'))}</span>
+      <button class="icon-btn" data-copycfg="${realIdx}" title="کپی">
+        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+      </button>
+      <button class="icon-btn" data-qr="${realIdx}" title="QR">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/></svg>
+      </button>
+    </div>`;
+  }).join('');
+
+  host.querySelectorAll('[data-copycfg]').forEach(btn => {
+    btn.onclick = () => copy(list[+btn.dataset.copycfg].link);
+  });
+  host.querySelectorAll('[data-qr]').forEach(btn => {
+    const c = list[+btn.dataset.qr];
+    btn.onclick = () => showQr(c.link, c.name || 'کانفیگ');
+  });
+}
+
+function renderApps(apps){
+  $('appList').innerHTML = apps.map(a => `
+    <a class="app" href="${esc(a.url || '#')}" target="_blank" rel="noopener">
+      <div class="app-ico">${a.icon || '📱'}</div>
+      <div>
+        <div class="app-n">${esc(a.name)}</div>
+        <div class="app-d">${esc(a.desc || '')}</div>
+      </div>
+      <span class="app-go">›</span>
+    </a>`).join('');
+}
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+async function copy(text){
+  if (!text) return;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+    }
+    toast('کپی شد');
+  } catch(e){ toast('کپی نشد — دستی انتخاب کنید', true); }
+}
+
+let toastT;
+function toast(msg, bad){
+  $('toastTxt').textContent = msg;
+  const el = $('toast');
+  el.style.borderColor = bad ? 'rgba(255,93,115,.45)' : 'rgba(56,211,159,.4)';
+  el.classList.add('on');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('on'), 1900);
+}
+
+function showQr(text, title){
+  if (!text) return;
+  $('qrTitle').textContent = title || 'کد QR';
+  const host = $('qrHost');
+  host.innerHTML = '';
+  try {
+    const qr = qrcode(0, 'M');
+    qr.addData(text);
+    qr.make();
+    host.innerHTML = qr.createSvgTag({ cellSize: 5, margin: 0, scalable: true });
+    const svg = host.querySelector('svg');
+    if (svg) { svg.setAttribute('width', '210'); svg.setAttribute('height', '210'); }
+  } catch(e){
+    host.innerHTML = '<div style="color:#111;font-size:12px;padding:20px">تولید QR ناموفق</div>';
+  }
+  $('qrModal').classList.add('on');
+}
+
+/* tabs */
+document.querySelectorAll('.tab').forEach(t => {
+  t.onclick = () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === t));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+    $('v-' + t.dataset.view).classList.add('on');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+});
+$('qrClose').onclick = () => $('qrModal').classList.remove('on');
+$('qrModal').onclick = e => { if (e.target.id === 'qrModal') $('qrModal').classList.remove('on'); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('qrModal').classList.remove('on'); });
+
+boot();
+</script>
+</body>
+</html>

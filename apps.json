@@ -1,0 +1,44 @@
+[
+  {
+    "name": "v2rayNG",
+    "desc": "اندروید · محبوب‌ترین کلاینت",
+    "icon": "🤖",
+    "url": "https://github.com/2dust/v2rayNG/releases/latest"
+  },
+  {
+    "name": "Hiddify",
+    "desc": "اندروید / ویندوز / مک / لینوکس",
+    "icon": "🛡️",
+    "url": "https://github.com/hiddify/hiddify-app/releases/latest"
+  },
+  {
+    "name": "Streisand",
+    "desc": "آیفون و آیپد",
+    "icon": "🍎",
+    "url": "https://apps.apple.com/app/streisand/id6450534064"
+  },
+  {
+    "name": "v2Box",
+    "desc": "آیفون · جایگزین سبک",
+    "icon": "📦",
+    "url": "https://apps.apple.com/app/v2box-v2ray-client/id6446814690"
+  },
+  {
+    "name": "NekoBox",
+    "desc": "اندروید · پیشرفته",
+    "icon": "🐱",
+    "url": "https://github.com/MatsuriDayo/NekoBoxForAndroid/releases/latest"
+  },
+  {
+    "name": "FoXray",
+    "desc": "مک و آیفون",
+    "icon": "🦊",
+    "url": "https://apps.apple.com/app/foxray/id6448898396"
+  },
+  {
+    "name": "Nekoray",
+    "desc": "ویندوز و لینوکس",
+    "icon": "💻",
+    "url": "https://github.com/MatsuriDayo/nekoray/releases/latest"
+  }
+]
