@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="240" viewBox="0 0 820 240" role="img" aria-label="VANTA — Private Network">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffc078"/>
+      <stop offset=".55" stop-color="#ff7d03"/>
+      <stop offset="1" stop-color="#d95000"/>
+    </linearGradient>
+    <linearGradient id="t" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".55" stop-color="#ffd7a8"/>
+      <stop offset="1" stop-color="#ff9a3c"/>
+    </linearGradient>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1526"/>
+      <stop offset="1" stop-color="#070b14"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".18" cy=".2" r=".75">
+      <stop offset="0" stop-color="#ff7d03" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#ff7d03" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- self-contained dark card so it reads on light or dark READMEs -->
+  <rect width="820" height="240" rx="26" fill="url(#bg)"/>
+  <rect width="820" height="240" rx="26" fill="url(#glow)"/>
+  <rect x="1" y="1" width="818" height="238" rx="25" fill="none"
+        stroke="#ff7d03" stroke-opacity=".22" stroke-width="2"/>
+
+  <!-- mark -->
+  <g transform="translate(40,46)">
+    <rect x="0" y="0" width="148" height="148" rx="38" fill="#121a2c"
+          stroke="#ff7d03" stroke-opacity=".42" stroke-width="2.5"/>
+    <path d="M40 50l34 62 34-62" fill="none" stroke="url(#g)" stroke-width="16"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="108" cy="44" r="9" fill="#ffb057"/>
+    <circle cx="126" cy="28" r="5.4" fill="#ff7d03" opacity=".85"/>
+    <path d="M99 64a21 21 0 0 1 10-16" fill="none" stroke="#ff9a3c"
+          stroke-width="5" stroke-linecap="round" opacity=".55"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="222" y="126" font-family="Inter, 'Helvetica Neue', Arial, sans-serif"
+        font-size="82" font-weight="800" letter-spacing="9" fill="url(#t)">VANTA</text>
+  <text x="226" y="168" font-family="Inter, 'Helvetica Neue', Arial, sans-serif"
+        font-size="15.5" font-weight="600" letter-spacing="8" fill="#8496b4">PRIVATE NETWORK</text>
+</svg>

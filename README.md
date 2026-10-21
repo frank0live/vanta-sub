@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="assets/logo.png" width="300" alt="VANTA">
+  <img src="assets/wordmark.svg" width="620" alt="VANTA — Private Network">
 </p>
-
-<h1 align="center">VANTA</h1>
 
 <p align="center">
   <b>A subscription page that doesn't look like every other subscription page.</b><br>
