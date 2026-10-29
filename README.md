@@ -179,3 +179,7 @@ MIT — see [LICENSE](LICENSE).
 The Vazirmatn webfont is loaded from jsDelivr under the SIL Open Font License.
 `assets/qrcode.js` is [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator)
 by Kazuhiko Arase, MIT.
+
+## Support
+
+- 💬 Telegram: [@master_supports](https://t.me/master_supports)
